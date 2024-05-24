@@ -12,15 +12,15 @@ export default function Dashboard() {
       setTab(tabFormUrl);
     }
   }, [location.search]);
-  console.log("tab-->",tab);
+  // console.log("tab-->", tab);
   return (
     <div className="min-h-screen flex flex-col md:flex-row">
       <div className="md:w-56">
         {/* sidebar */}
         <DashSidebar />
-        {/* Profile */}
-        {tab === "profile" && <DashProfile />}
       </div>
+      {/* Profile */}
+      {tab === "profile" && <DashProfile />}
     </div>
   );
 }

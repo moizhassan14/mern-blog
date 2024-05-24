@@ -1,4 +1,4 @@
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
 import {
   Sidebar,
@@ -23,14 +23,17 @@ export default function DashSidebar() {
     <Sidebar className="w-full md:w-56">
       <SidebarItems>
         <SidebarItemGroup>
-          <SidebarItem
-            active={tab == "profile"}
-            label={"User"}
-            labelColor="dark"
-            icon={CgProfile}
-          >
-            Profile
-          </SidebarItem>
+          <Link to={"/dashboard?tab==profile"}>
+            <SidebarItem
+              active={tab == "profile"}
+              label={"User"}
+              labelColor="dark"
+              icon={CgProfile}
+              as='div'
+            >
+              Profile
+            </SidebarItem>
+          </Link>
           <SidebarItem icon={FaSignOutAlt}>Sign Out</SidebarItem>
         </SidebarItemGroup>
       </SidebarItems>

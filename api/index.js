@@ -5,6 +5,7 @@ import chalk from "chalk";
 import userRoutes from "./routes/user.route.js";
 import authRoutes from "./routes/auth.route.js";
 import cors from 'cors';
+import cookieParser from "cookie-parser";
 //database Connection
 mongoose
   .connect(process.env.MONGO)
@@ -20,6 +21,7 @@ const app = express();
 //middlewares
 app.use(express.json());
 app.use(cors());
+app.use(cookieParser());
 //middleware for handling errors
 app.use((err, req, res, next) => {
   const statusCode = err.statusCode || "";

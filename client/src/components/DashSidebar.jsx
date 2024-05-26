@@ -8,8 +8,11 @@ import {
 } from "flowbite-react";
 import { CgProfile } from "react-icons/cg";
 import { FaSignOutAlt } from "react-icons/fa";
+import { useDispatch } from "react-redux";
+import { signOutSuccess,signOutFailure } from "../redux/user/userSlice";
 
 export default function DashSidebar() {
+  const dispatch=useDispatch();
   const location = useLocation();
   const [tab, setTab] = useState("");
   useEffect(() => {
@@ -19,6 +22,21 @@ export default function DashSidebar() {
       setTab(tabFormUrl);
     }
   }, [location.search]);
+  const handleSignout = async () => {
+    try {
+      const res = await fetch("/api/user/signout", {
+        method: "POST",
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        dispatch(signOutFailure(data.message));
+      } else {
+        dispatch(signOutSuccess(data));
+      }
+    } catch (error) {
+      dispatch(signOutFailure(error.message));
+    }
+  };
   return (
     <Sidebar className="w-full md:w-56">
       <SidebarItems>
@@ -34,7 +52,7 @@ export default function DashSidebar() {
               Profile
             </SidebarItem>
           </Link>
-          <SidebarItem icon={FaSignOutAlt}>Sign Out</SidebarItem>
+          <SidebarItem onClick={handleSignout} icon={FaSignOutAlt} >Sign Out</SidebarItem>
         </SidebarItemGroup>
       </SidebarItems>
     </Sidebar>

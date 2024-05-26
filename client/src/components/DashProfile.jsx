@@ -21,10 +21,11 @@ import {
   signOutSuccess,
   signOutFailure
 } from "../redux/user/userSlice";
-import {HiOutlineExclamationCircle} from 'react-icons/hi'
+import {HiOutlineExclamationCircle} from 'react-icons/hi';
+import { Link } from "react-router-dom";
 export default function DashProfile() {
   const dispatch = useDispatch();
-  const { currentUser ,error } = useSelector((state) => state.user);
+  const { currentUser ,error ,loading } = useSelector((state) => state.user);
   const fileRef = useRef();
   const [imageFile, setImageFile] = useState(null);
   const [imageFileUrl, setImageFileUrl] = useState(null);
@@ -174,44 +175,45 @@ export default function DashProfile() {
           onClick={() => fileRef.current.click()}
           className="relative w-32 h-32 rounded-full self-center shadow-md overflow-hidden cursor-pointer"
         >
-          {imageFileUploadProgress && !isUploadCompleted (
-            <CircularProgressbar
-              value={imageFileUploadProgress || 0}
-              text={`${imageFileUploadProgress}%`}
-              strokeWidth={3}
-              styles={{
-                root: {
-                  position: "absolute",
-                  width: "100%",
-                  height: "100%",
-                  top: 0,
-                  left: 0,
-                },
-                path: {
-                  stroke: `rgba(62, 152, 199, ${
-                    imageFileUploadProgress / 100
-                  })`,
-                  strokeLinecap: "butt",
-                  transition: "stroke-dashoffset 0.5s ease 0s",
-                  transform: "rotate(0.25turn)",
-                  transformOrigin: "center center",
-                },
-                trail: {
-                  stroke: "#d6d6d6",
-                  strokeLinecap: "butt",
-                  transform: "rotate(0.25turn)",
-                  transformOrigin: "center center",
-                },
-                text: {
-                  fill: "#f88",
-                  fontSize: "16px",
-                },
-                background: {
-                  fill: "#3e98c7",
-                },
-              }}
-            />
-          )}
+          {imageFileUploadProgress &&
+            !isUploadCompleted(
+              <CircularProgressbar
+                value={imageFileUploadProgress || 0}
+                text={`${imageFileUploadProgress}%`}
+                strokeWidth={3}
+                styles={{
+                  root: {
+                    position: "absolute",
+                    width: "100%",
+                    height: "100%",
+                    top: 0,
+                    left: 0,
+                  },
+                  path: {
+                    stroke: `rgba(62, 152, 199, ${
+                      imageFileUploadProgress / 100
+                    })`,
+                    strokeLinecap: "butt",
+                    transition: "stroke-dashoffset 0.5s ease 0s",
+                    transform: "rotate(0.25turn)",
+                    transformOrigin: "center center",
+                  },
+                  trail: {
+                    stroke: "#d6d6d6",
+                    strokeLinecap: "butt",
+                    transform: "rotate(0.25turn)",
+                    transformOrigin: "center center",
+                  },
+                  text: {
+                    fill: "#f88",
+                    fontSize: "16px",
+                  },
+                  background: {
+                    fill: "#3e98c7",
+                  },
+                }}
+              />
+            )}
           <img
             className={`w-full h-full rounded-full object-cover border-6 border-[lightgray] ${
               imageFileUploadProgress &&
@@ -222,7 +224,7 @@ export default function DashProfile() {
             alt=""
           />
         </div>
-        {imageFileUploadError &&  (
+        {imageFileUploadError && (
           <Alert color="failure">{imageFileUploadError}</Alert>
         )}
         <TextInput
@@ -245,42 +247,49 @@ export default function DashProfile() {
           placeholder="password"
           onChange={handleChange}
         />
-        <Button type="submit" gradientDuoTone="purpleToBlue" outline>
-          Update
+        <Button type="submit" gradientDuoTone="purpleToBlue" outline disabled={loading || imageFileUploading}>
+          {loading ? 'loading...':'Update'}
         </Button>
+        {currentUser.isAdmin && (
+          <Link to={'/create-post'}>
+          <Button className="w-full" type="button" gradientDuoTone="purpleToPink" outline>
+            Create a post
+          </Button>
+        </Link>
+        )}
       </form>
       <div className="text-red-500 mt-5 flex justify-between">
         <button onClick={() => setOpenModal(true)}>Delete user</button>
         <button onClick={handleSignout}>Sign out</button>
       </div>
-        {updateUserError && (
-          <Alert color="failure" className="mt-5">
-            {updateUserError}
-          </Alert>
-        )}
-        {updateUserSuccess && (
-          <Alert color="success" className="mt-5">
-            {updateUserSuccess}
-          </Alert>
-        )}
-        {error && (
-          <Alert color="success" className="mt-5">
-            {error}
-          </Alert>
-        )}
-        <Modal show={openModal} onClose={() => setOpenModal(false)}>
-        <Modal.Header/>
+      {updateUserError && (
+        <Alert color="failure" className="mt-5">
+          {updateUserError}
+        </Alert>
+      )}
+      {updateUserSuccess && (
+        <Alert color="success" className="mt-5">
+          {updateUserSuccess}
+        </Alert>
+      )}
+      {error && (
+        <Alert color="success" className="mt-5">
+          {error}
+        </Alert>
+      )}
+      <Modal show={openModal} onClose={() => setOpenModal(false)}>
+        <Modal.Header />
         <Modal.Body>
           <div className="text-center">
-          <HiOutlineExclamationCircle className='h-14 w-14 text-gray-400 dark:text-gray-200 mb-4 mx-auto' />
-            <h3 className='mb-5 text-lg text-gray-500 dark:text-gray-400'>
+            <HiOutlineExclamationCircle className="h-14 w-14 text-gray-400 dark:text-gray-200 mb-4 mx-auto" />
+            <h3 className="mb-5 text-lg text-gray-500 dark:text-gray-400">
               Are you sure you want to delete your account?
             </h3>
-            <div className='flex justify-center gap-4'>
-              <Button color='failure' onClick={handleDeleteUser}>
+            <div className="flex justify-center gap-4">
+              <Button color="failure" onClick={handleDeleteUser}>
                 Yes, I'm sure
               </Button>
-              <Button color='gray' onClick={() => setOpenModal(false)}>
+              <Button color="gray" onClick={() => setOpenModal(false)}>
                 No, cancel
               </Button>
             </div>

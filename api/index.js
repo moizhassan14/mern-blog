@@ -39,3 +39,5 @@ app.use("/api/auth", authRoutes);
 app.listen(3000, () => {
   console.log("server is running on 3000!!");
 });
+
+//1 line of code

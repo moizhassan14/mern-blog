@@ -176,7 +176,7 @@ export default function DashProfile() {
           className="relative w-32 h-32 rounded-full self-center shadow-md overflow-hidden cursor-pointer"
         >
           {imageFileUploadProgress &&
-            !isUploadCompleted(
+            !isUploadCompleted && (
               <CircularProgressbar
                 value={imageFileUploadProgress || 0}
                 text={`${imageFileUploadProgress}%`}

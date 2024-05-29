@@ -1,5 +1,6 @@
 import { errorHandler } from "../utilis/error.js";
 import User from "../models/user.model.js";
+import bcryptjs from 'bcryptjs';
 
 export const test = (_, res) => {
   return res.status(200).json("testing...");
@@ -33,6 +34,7 @@ export const updateUser = async (req, res, next) => {
     }
   }
   try {
+    const hashedPassword= bcryptjs.hashSync(req.body.password, 10);
     const updatedUser = await User.findByIdAndUpdate(
       req.params.userId,
       {
@@ -40,7 +42,7 @@ export const updateUser = async (req, res, next) => {
           username: req.body.username,
           email: req.body.email,
           profilePicture: req.body.profilePicture,
-          password: req.body.password,
+          password: hashedPassword,
         },
       },
       { new: true }

@@ -6,6 +6,7 @@ import userRoutes from "./routes/user.route.js";
 import authRoutes from "./routes/auth.route.js";
 import cors from 'cors';
 import cookieParser from "cookie-parser";
+import postRoutes from "./routes/post.route.js"
 //database Connection
 mongoose
   .connect(process.env.MONGO)
@@ -35,6 +36,7 @@ app.use((err, req, res, next) => {
 //routes
 app.use("/api/user", userRoutes);
 app.use("/api/auth", authRoutes);
+app.use("/api/post",postRoutes)
 //server running
 app.listen(3000, () => {
   console.log("server is running on 3000!!");

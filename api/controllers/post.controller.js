@@ -49,7 +49,11 @@ export const getPosts = async (req, res, next) => {
 
     const totalPosts = await Post.countDocuments();
     const now = new Date();
-    const oneMonthAgo=new Date(now.getFullYear(), now.getMonth() - 1, now.getDate());
+    const oneMonthAgo = new Date(
+      now.getFullYear(),
+      now.getMonth() - 1,
+      now.getDate()
+    );
     const lastMonthPosts = await Post.countDocuments({
       createdAt: { $gte: oneMonthAgo },
     });
@@ -70,6 +74,34 @@ export const deletePost = async (req, res, next) => {
   try {
     await Post.findByIdAndDelete(req.params.postId);
     return res.status(200).json("This post has been deleted");
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const updateUser = async (req, res, next) => {
+  if (!req.user.isAdmin || req.user.id !== req.params.userId) {
+    return next(errorHandler(401, "You are not allowed to update this post"));
+  }
+  try {
+    const updatedPost = await Post.findByIdAndUpdate(
+      req.params.postId,
+      {
+        $set: {
+          title: req.body.title,
+          content: req.body.content,
+          category: req.body.category,
+          image: req.body.image,
+        },
+      },
+      { new: true }
+    );
+    if (!updatedPost) {
+      return res.status(404).json({ message: "Post not found" });
+    }
+    return res
+      .status(200)
+      .json(updatedPost);
   } catch (error) {
     next(error);
   }

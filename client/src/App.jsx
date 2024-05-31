@@ -10,6 +10,7 @@ import PrivateRoute from "./pages/PrivateRoute";
 import Dashboard from "./pages/Dashboard";
 import IsAdminPrivateRoute from "./pages/IsAdminPrivateRoute";
 import CreatePost from "./pages/CreatePost";
+import UpdatePost from "./pages/UpdatePost";
 
 export default function App() {
   return (
@@ -26,6 +27,7 @@ export default function App() {
         </Route>
         <Route  element={<IsAdminPrivateRoute/>} >
           <Route path="/create-post" element={<CreatePost/>} />
+          <Route path="/update-post/:postId" element={<UpdatePost/>} />
         </Route>
       </Routes>
       <Footer/>

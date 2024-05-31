@@ -8,4 +8,13 @@ body{
 .ql-editor {
     font-size: 1.05rem;
   }
+
+  .table-auto {
+    width: 100%; /* Ensure the table takes up the full width */
+    height: 100%; /* Or a specific height */
+    display: flex;
+    flex-direction: column;
+  }
+  
+
   

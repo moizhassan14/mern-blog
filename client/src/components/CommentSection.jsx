@@ -1,11 +1,13 @@
 import { Alert, Button, Textarea } from "flowbite-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import Comment from "./Comment";
 export default function CommentSection({ postId }) {
   const { currentUser } = useSelector((state) => state.user);
   const [comment, setComment] = useState("");
   const [commentError, setCommentError] = useState(null);
+  const [comments,setComments]=useState([]);
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (comment.length > 200) {
@@ -25,6 +27,7 @@ export default function CommentSection({ postId }) {
       if (res.ok) {
         setComment("");
         setCommentError(null);
+        setComments([data,...comments]);
       } else {
         setCommentError(data.message);
       }
@@ -32,11 +35,25 @@ export default function CommentSection({ postId }) {
       setCommentError(error.message);
     }
   };
+  useEffect(() => {
+    const getComments = async () => {
+      try {
+        const res = await fetch(`/api/comment/getPostComments/${postId}`);
+        const data = await res.json();
+        if (res.ok) {
+          setComments(data);
+        }
+      } catch (error) {
+        console.log(error.message);
+      }
+    };
+    getComments();
+  }, [postId]);
   console.log("postId-->", postId);
   return (
     <div className="mx-auto w-full max-w-2xl p-3">
       {currentUser ? (
-        <div className="flex items-center gap-1 text-gray-500 text-sm">
+        <div className="flex items-center my-5 gap-1 text-gray-500 text-sm">
           <p>Signed in as:</p>
           <img
             className="h-5 w-5 object-cover rounded-full"
@@ -83,6 +100,21 @@ export default function CommentSection({ postId }) {
             </Alert>
           )}
         </form>
+      )}
+      {comments.length === 0 ?(
+        <p className="text-sm my-5">No comments to show</p>
+      ):(
+        <>
+        <div className="flex items-center gap-1 text-sm my-5">
+          <p>Comments</p>
+          <div className="border border-gray-400 py-1 px-2 rounded-sm">
+            <p>{comments.length}</p>
+          </div>
+        </div>
+        {comments.map((comment)=>(
+          <Comment key={comment._id} comment={comment}/>
+        ))}
+        </>
       )}
     </div>
   );

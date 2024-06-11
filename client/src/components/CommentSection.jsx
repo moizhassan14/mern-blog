@@ -78,6 +78,18 @@ export default function CommentSection({ postId }) {
       console.log(error.message);
     }
   };
+  const handleEdit =async(comment, editContent) => {
+    setComments(
+      comments.map((c) =>
+        c._id === comment._id
+          ? {
+              ...c,
+              content: editContent,
+            }
+          : c
+      )
+    );
+  };
   return (
     <div className="mx-auto w-full max-w-2xl p-3">
       {currentUser ? (
@@ -140,7 +152,7 @@ export default function CommentSection({ postId }) {
             </div>
           </div>
           {comments.map((comment) => (
-            <Comment key={comment._id} comment={comment} onLike={handleLike} />
+            <Comment key={comment._id} comment={comment} onLike={handleLike} onEdit={handleEdit} />
           ))}
         </>
       )}

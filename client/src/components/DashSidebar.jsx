@@ -8,7 +8,7 @@ import {
 } from "flowbite-react";
 import { CgProfile } from "react-icons/cg";
 import { FaSignOutAlt, FaUsers } from "react-icons/fa";
-import { HiDocumentText } from "react-icons/hi";
+import { HiAnnotation, HiDocumentText } from "react-icons/hi";
 import { useDispatch } from "react-redux";
 import { signOutSuccess,signOutFailure } from "../redux/user/userSlice";
 import { useSelector } from "react-redux";
@@ -67,6 +67,7 @@ export default function DashSidebar() {
            </Link>
           )}
           {currentUser.isAdmin && (
+             <>
              <Link to={"/dashboard?tab=users"}>
              <SidebarItem
                active={tab === "users"}
@@ -76,6 +77,16 @@ export default function DashSidebar() {
                Users
              </SidebarItem>
            </Link>
+           <Link to={"/dashboard?tab=comments"}>
+             <SidebarItem
+               active={tab === "comments"}
+               icon={HiAnnotation}
+               as='div'
+             >
+               Comments
+             </SidebarItem>
+           </Link>
+             </>
           )}
           <SidebarItem onClick={handleSignout} icon={FaSignOutAlt} >Sign Out</SidebarItem>
         </SidebarItemGroup>

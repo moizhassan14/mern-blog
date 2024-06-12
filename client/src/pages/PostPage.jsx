@@ -3,11 +3,13 @@ import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import CallToAction from "../components/CallToAction";
 import CommentSection from "../components/CommentSection";
+import PostCard from "../components/PostCard";
 export default function PostPage() {
   const { postSlug } = useParams();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [post, setPost] = useState(null);
+  const [recentPosts, setRecentPost] = useState(null);
   useEffect(() => {
     try {
       const fetchPosts = async () => {
@@ -30,6 +32,20 @@ export default function PostPage() {
       setLoading(false);
     }
   }, [postSlug]);
+  useEffect(() => {
+    try {
+      const fetcPosts = async () => {
+        const res = await fetch(`/api/post/getPosts?limit=3`);
+        if (res.ok) {
+          const data = await res.json();
+          setRecentPost(data.posts);
+        }
+      };
+      fetcPosts();
+    } catch (error) {
+      console.log(error.message);
+    }
+  }, []);
   if (loading)
     return (
       <div className="flex justify-center items-center min-h-screen ">
@@ -60,13 +76,21 @@ export default function PostPage() {
           {post && (post.content.length / 1000).toFixed(0)} mins read
         </span>
       </div>
-      <div className="p-3 mx-auto max-w-2xl w-full post-content" dangerouslySetInnerHTML={{__html:post && post.content}}></div>
+      <div
+        className="p-3 mx-auto max-w-2xl w-full post-content"
+        dangerouslySetInnerHTML={{ __html: post && post.content }}
+      ></div>
       <div className="max-w-4xl mx-auto w-full">
-        <CallToAction/>
+        <CallToAction />
       </div>
-      {post && (
-      <CommentSection postId={post._id} />
-    )}
+      {post && <CommentSection postId={post._id} />}
+      <div className="flex flex-col justify-center items-center mb-5">
+        <h1 className="text-xl mt-5">Recent article</h1>
+        <div className='flex flex-wrap gap-5 mt-5 justify-center'>
+          {recentPosts &&
+            recentPosts.map((post) => <PostCard key={post._id} post={post} />)}
+        </div>
+      </div>
     </main>
   );
 }

@@ -7,7 +7,8 @@ import authRoutes from "./routes/auth.route.js";
 import cors from 'cors';
 import cookieParser from "cookie-parser";
 import postRoutes from "./routes/post.route.js";
-import commentRoutes from "./routes/comment.route.js"
+import commentRoutes from "./routes/comment.route.js";
+import path from 'path';
 //database Connection
 mongoose
   .connect(process.env.MONGO)
@@ -17,6 +18,8 @@ mongoose
     )
   )
   .catch((err) => console.log(err));
+
+const __dirname=path.resolve();
 
 const app = express();
 
@@ -38,31 +41,13 @@ app.use((err, req, res, next) => {
 app.use("/api/user", userRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/post",postRoutes);
-app.use("/api/comment",commentRoutes)
+app.use("/api/comment",commentRoutes);
+
+app.use(express.static(path.join(__dirname,'/client/dist')));
+app.get('*',(req,res)=>{
+  res.sendFile(path.join(__dirname,'client','dist','index.html'));
+});
 //server running
 app.listen(3000, () => {
   console.log("server is running on 3000!!");
 });
-
-//1 line of code
-//2 line of code 
-// 3 line of code (mid)
-// 4 line of code (mid)
-//5th line of code 
-//6th line of code 
-//7th line of code
-//8TH LINE OF CODE
-//9th line of code
-//10th line of code
-//11th line of code
-//12 line of code
-//eid day 3
-// 13th line of code
-//sunday
-//14th line of code
-//15th line of code
-//16th line of code
-//code
-//17th line of code
-// 18th line of code
-//19 line of code 

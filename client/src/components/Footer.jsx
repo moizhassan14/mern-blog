@@ -17,26 +17,7 @@ export default function FooterCom() {
               Blog
             </Link>
           </div>
-          <div className='grid grid-cols-2 gap-8 mt-4 sm:grid-cols-3 sm:gap-6'>
-            <div>
-              <Footer.Title title='#' />
-              <Footer.LinkGroup col>
-                <Footer.Link
-                  href='/'
-                  target='_blank'
-                  rel='noopener noreferrer'
-                >
-                  100 JS Projects
-                </Footer.Link>
-                <Footer.Link
-                  href='/about'
-                  target='_blank'
-                  rel='noopener noreferrer'
-                >
-                  Moiz Blog
-                </Footer.Link>
-              </Footer.LinkGroup>
-            </div>
+          <div className='grid grid-cols-2 gap-8 mt-4 sm:grid-cols-2 sm:gap-6'>
             <div>
               <Footer.Title title='Follow us' />
               <Footer.LinkGroup col>
@@ -47,7 +28,7 @@ export default function FooterCom() {
                 >
                   Github
                 </Footer.Link>
-                <Footer.Link href='#'>Discord</Footer.Link>
+                <Footer.Link href='https://discord.gg/moiz_hassan'>Discord</Footer.Link>
               </Footer.LinkGroup>
             </div>
             <div>
@@ -67,11 +48,10 @@ export default function FooterCom() {
             year={new Date().getFullYear()}
           />
           <div className="flex gap-6 sm:mt-0 mt-4 sm:justify-center">
-            <Footer.Icon href='#' icon={BsFacebook}/>
-            <Footer.Icon href='#' icon={BsInstagram}/>
-            <Footer.Icon href='#' icon={BsTwitter}/>
+            <Footer.Icon href='https://www.facebook.com/mohaiz.mughal?mibextid=LQQJ4d' icon={BsFacebook}/>
+            <Footer.Icon href="https://www.instagram.com/mohaiz44"  icon={BsInstagram}/>
+            <Footer.Icon href="https://twitter.com/Moiz77312359" icon={BsTwitter}/>
             <Footer.Icon href='https://github.com/moizhassan14' icon={BsGithub}/>
-            <Footer.Icon href='#' icon={BsDribbble}/>
 
           </div>
         </div>

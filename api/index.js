@@ -61,6 +61,11 @@ if (process.env.NODE_ENV === 'production') {
     console.error('Error serving static files:', err);
   });
 }
+// Memory monitoring
+setInterval(() => {
+  const used = process.memoryUsage().heapUsed / 1024 / 1024;
+  console.log(`Memory: ${Math.round(used)}MB/${Math.round(process.memoryUsage().heapTotal / 1024 / 1024)}MB`);
+}, 5000);
 
 // Server running
 const PORT = process.env.PORT || 3000;
